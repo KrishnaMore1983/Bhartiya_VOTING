@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Voter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .logout a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout a:hover {
+            text-decoration: underline;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Edit Voter</h1>
+            <div class="logout">
+                <a href="/admindashboard">Back to Dashboard</a>
+            </div>
+        </header>
+        <form th:action="@{/admin/voters/save}" method="post">
+            <!-- Hidden input for voter ID -->
+             <input type="hidden" name="id" th:value="${voter.id}">
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" th:value="${voter.name}" required />
+           
+       		 <label for="gender">Gender</label>
+       		<input type="text" id="gender" name="gender" th:value="${voter.gender}" required />
+           
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="3" required th:text="${voter.address}"></textarea>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="DOB" th:value="${#dates.format(voter.DOB, 'yyyy-MM-dd')}" required />
+            
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>

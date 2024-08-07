@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: linear-gradient(270deg, #f4f7f9, #e0e7ff);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #23162e; /* Dark Violet */
+            font-size: 2em;
+        }
+
+        .logout, .add-voter {
+            color: #23162e; /* Dark Violet */
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .logout:hover, .add-voter:hover {
+            color: #23162e; /* Darker Violet */
+            text-decoration: underline;
+        }
+
+        .dashboard-content {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color:#23162e; /* Dark Violet */
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f7f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions a, .actions button {
+            background-color: #23162e; /* Dark Violet */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .actions a:hover {
+            background-color: #3b0070; /* Darker Violet */
+            transform: scale(1.05);
+        }
+
+        .actions button {
+            background-color: #dc3545; /* Red */
+        }
+
+        .actions button:hover {
+            background-color: #c82333; /* Darker Red */
+            transform: scale(1.05);
+        }
+
+        .show-button {
+            cursor: pointer;
+            background-color: #23162e; /* Dark Violet */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .show-button:hover {
+            background-color: #3b0070; /* Darker Violet */
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+            <div class="add-voter">
+                <a href="/saveVoter2">Add Voter</a>
+            </div>
+            <div class="logout">
+                <a href="/adminlogin">Logout</a>
+            </div>
+        </header>
+        <div class="dashboard-content">
+            <div class="card">
+                <h3>Welcome!</h3>
+                <p>You have successfully logged in.</p>
+            </div>
+            
+            <!-- Button to toggle the visibility of the voters section -->
+            <button class="show-button" onclick="toggleSection('voters-section', this)">Show Registered Voters</button>
+            
+            <div id="voters-section" class="hidden">
+                <h3>Registered Voters</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>DOB</th>
+                            <th>Gender</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="voter : ${voters}">
+                            <td th:text="${voter.id}">ID</td>
+                            <td th:text="${voter.name}">Name</td>
+                            <td th:text="${voter.address}">Address</td>
+                            <td th:text="${voter.DOB}">DOB</td>
+                            <td th:text="${voter.gender}">Gender</td>
+                            <td class="actions">
+                                <a th:href="@{/admin/voters/edit/{id}(id=${voter.id})}">Edit</a>
+                                <form th:action="@{/admin/voters/delete/{id}(id=${voter.id})}" method="post" style="display:inline;">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Button to toggle the visibility of the elections section -->
+           
+                <!-- Section for Upcoming Elections -->
+                <div class="card">
+                    <h3>Manage Upcoming Elections</h3>
+                    <form th:action="@{/admin/elections/add}" method="post">
+                        <div>
+                            <label for="electionName">Election Name:</label>
+                            <input type="text" id="electionName" name="name" required>
+                        </div>
+                        <div>
+                            <label for="electionDate">Election Date:</label>
+                            <input type="date" id="electionDate" name="date" required>
+                        </div>
+                        <button type="submit" class="show-button">Add Election</button>
+                    </form>
+                </div>
+            <button class="show-button" onclick="toggleSection('elections-section', this)">Show Upcoming Elections</button>
+
+            <div id="elections-section" class="hidden">
+                <div class="card">
+                    <h3>Upcoming Elections</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="election : ${elections}">
+                                <td th:text="${election.id}">ID</td>
+                                <td th:text="${election.name}">Name</td>
+                                <td th:text="${#dates.format(election.date, 'yyyy-MM-dd')}">Date</td>
+                                <td class="actions">
+                                    <a th:href="@{/admin/elections/edit/{id}(id=${election.id})}">Edit</a>
+                                    <form th:action="@{/admin/elections/delete/{id}(id=${election.id})}" method="post" style="display:inline;">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSection(sectionId, button) {
+            var section = document.getElementById(sectionId);
+            if (section) {
+                if (section.classList.contains('hidden')) {
+                    section.classList.remove('hidden');
+                    button.textContent = 'Hide ' + button.textContent.split(' ')[1];
+                } else {
+                    section.classList.add('hidden');
+                    button.textContent = 'Show ' + button.textContent.split(' ')[1];
+                }
+            } else {
+                console.error('Section with id "' + sectionId + '" not found.');
+            }
+        }
+    </script>
+</body>
+</html>

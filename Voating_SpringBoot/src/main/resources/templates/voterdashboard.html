@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(270deg, #f4f7f9, #e0e7ff);
+            animation: gradientAnimation 15s ease infinite;
+        }
+         @keyframes gradientAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+            color: #23162e; /* Dark Blue */
+        }
+        .logout {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid #23162e; /* Dark Blue */
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #23162e; /* Dark Blue */
+            font-weight: bold;
+        }
+        .logout a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .logout:hover {
+            background-color: #23162e; /* Dark Blue */
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .dashboard-content {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #23162e; /* Dark Blue */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        a {
+            color: #23162e; /* Dark Blue */
+            text-decoration: none;
+            border: 2px solid #23162e; /* Dark Blue */
+            border-radius: 4px;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        a:hover {
+            text-decoration: none;
+            background-color: #23162e; /* Dark Blue */
+            color: #ffffff;
+        }
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form input[type="submit"] {
+            background-color: #23162e; /* Dark Blue */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        form input[type="submit"]:hover {
+            background-color: #1a0a2a; /* Slightly Darker Shade */
+        }
+        .feedback-message {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Voter Dashboard</h1>
+            <div class="logout">
+                <a href="/voterlogin">Logout</a>
+            </div>
+        </header>
+        <div class="dashboard-content">
+            <h3>Personalized Voting Tips</h3>
+            <ul>
+                <li>Verify your voting location and hours.</li>
+                <li>Bring any necessary identification required by your state.</li>
+                <li>Consider voting early or absentee if you are unable to vote on Election Day.</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Upcoming Elections</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate over the list of elections and display each row -->
+                    <tr th:each="election : ${elections}">
+                        <td th:text="${election.id}">ID</td>
+                        <td th:text="${election.name}">Name</td>
+                        <td th:text="${#dates.format(election.date, 'yyyy-MM-dd')}">Date</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card">
+            <h3>Help and FAQs</h3>
+            <ul>
+                <li><a href="/faq" target="_blank">Frequently Asked Questions</a></li>
+                <li><a href="/contactsupport" target="_blank">Contact Support</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Election Day Weather</h3>
+            <p>Check the weather forecast for Election Day to plan your trip to the polls.</p>
+            <a href="https://weather.com/widget" target="_blank">Check It</a>
+        </div>
+        <div class="card">
+            <h3>Find Your Polling Place</h3>
+            <a href="https://www.google.com/maps" target="_blank">Open Google Maps</a>
+        </div>
+        <div class="card">
+            <h3>Feedback</h3>
+            <form action="/submitFeedback" method="post">
+                <textarea name="feedback" placeholder="Your feedback..." rows="4" required></textarea><br>
+                <input type="submit" value="Submit Feedback">
+            </form>
+            <div th:if="${message}">
+                <p th:text="${message}" class="feedback-message"></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

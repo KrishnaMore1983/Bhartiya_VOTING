@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('/images/login.jpg');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #23162e; /* Dark Blue */
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color:#23162e; /* Dark Blue */
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus {
+            border-color: #23162e; /* Dark Blue */
+            outline: none;
+        }
+        .form-group input[type="submit"] {
+            background-color: #23162e;/* Dark Violet */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #23162e; /* Darker Violet */
+            transform: scale(1.05);
+        }
+        .error {
+            color: #dc3545; /* Red */
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .back-link {
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #23162e; /* Dark Blue */
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            transition: color 0.3s ease;
+        }
+        .back-link a:hover {
+            color: #23162e; /* Slightly Darker Shade of Dark Blue */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Login</h2>
+        <form action="/adminlogin" method="post" th:object="${admin}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" th:field="*{username}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" th:field="*{password}" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login">
+            </div>
+            <div class="error" th:if="${error}" th:text="${error}"></div>
+        </form>
+        <div class="back-link">
+            <a href="/saveHome">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

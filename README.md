@@ -9,7 +9,7 @@ It is new and innovative web portal made using Java and Springboot
 
 
 Admin:
->He is able to register himselef and he can add voter,edit them or delete them and can access othe functionality also...
+>He is able to register himself and he can add voter,edit them or delete them and can access othe functionality also...
 
 User:
 >He is able to register himself and after login he can access various functionality of finding polling place,weather check,rules & regulation
